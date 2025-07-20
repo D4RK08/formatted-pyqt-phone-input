@@ -29,8 +29,8 @@ class CountryDropdown(QComboBox):
         self.__icon_size = 0
         self.__border_width = 0
         self.__popup_open = False
-        self.__current_country_code = ''
-
+        self.__current_country_code = ""
+        self.__format = ""
         # Initial settings
         self.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.view().setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
@@ -153,6 +153,9 @@ class CountryDropdown(QComboBox):
         self.__calculate_geometry()
         self.update()
 
+    def getFormat(self) -> str:
+        return self.__format
+
     def isDropdownOpen(self) -> bool:
         """Gets whether the dropdown is currently opened
 
@@ -194,3 +197,7 @@ class CountryDropdown(QComboBox):
 
         self.__update_country_code()
         self.__calculate_geometry()
+        self.__update_format()
+
+    def __update_format(self):
+        self.__format = countries[self.getCountry()][2]
