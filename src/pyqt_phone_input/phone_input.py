@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QWidget, QLineEdit, QHBoxLayout
-from country_dropdown import CountryDropdown
+from .country_dropdown import CountryDropdown
 
 class PhoneInput(QWidget):
     def __init__(self):
@@ -87,7 +87,7 @@ class PhoneInput(QWidget):
                 break
 
         # Mantiene la posizione del cursore dopo la formattazione
-        cursor_pos = self.text.cursorPosition()
+        cursor_pos = self.text.cursorPosition()+1
         self.text.blockSignals(True)
         self.text.setText(formatted)
         self.text.blockSignals(False)
