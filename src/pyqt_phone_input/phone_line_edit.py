@@ -22,9 +22,46 @@ class PhoneLineEdit(QLineEdit):
         self.__country_dropdown = None
         self.__border_color_current = None
         self.__border_width = 0
-
+        self.textChanged.connect(self.text_changed)
+        
         # Set validator to only allow numbers and spaces as input
         self.setValidator(QRegularExpressionValidator(QRegularExpression('[0-9 ]*')))
+
+    def set_format(self, phone_format: str):
+        self.phone_format = phone_format
+        self.separator_positions = []
+        self.total_digits = 0
+
+        # Registra le posizioni dei separatori e conta le cifre
+        for i, c in enumerate(phone_format):
+            if c != '0':
+                self.separator_positions.append((i, c))
+            else:
+                self.total_digits += 1
+
+
+    def text_changed(self, text: str):
+        self.set_format(self.__country_dropdown.getPhoneFormat())
+        digits = ''.join(filter(str.isdigit, text))[:self.total_digits]
+        formatted = ''
+        digit_index = 0
+
+        for i in range(len(self.phone_format)):
+            if any(pos == i for pos, _ in self.separator_positions):
+                sep = next(sep for pos, sep in self.separator_positions if pos == i)
+                formatted += sep
+            elif digit_index < len(digits):
+                formatted += digits[digit_index]
+                digit_index += 1
+            else:
+                break
+
+        # Mantiene la posizione del cursore dopo la formattazione
+        cursor_pos = self.cursorPosition()+1
+        self.blockSignals(True)
+        self.setText(formatted)
+        self.blockSignals(False)
+        self.setCursorPosition(min(cursor_pos, len(formatted)))
 
     def paintEvent(self, event):
         """Method that gets called every time the widget needs to be updated.
@@ -70,6 +107,9 @@ class PhoneLineEdit(QLineEdit):
 
         return self.__country_dropdown
 
+    def __dropdown_hide(self):
+        self.text_changed(self.text())
+
     def setCountryDropdown(self, country_dropdown: CountryDropdown):
         """Set the country dropdown
 
@@ -77,6 +117,7 @@ class PhoneLineEdit(QLineEdit):
         """
 
         self.__country_dropdown = country_dropdown
+        self.__country_dropdown.hide_popup.connect(self.__dropdown_hide)
 
     def getCurrentBorderColor(self) -> QColor:
         """Get the current border color
