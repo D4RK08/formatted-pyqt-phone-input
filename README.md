@@ -6,9 +6,7 @@
 [![Coverage](https://img.shields.io/badge/coverage-90%25-neon)](https://github.com/marcohenning/pyqt-phone-input)
 [![Build](https://img.shields.io/badge/build-passing-neon)](https://github.com/marcohenning/pyqt-phone-input)
 
-A clean and modern phone number input widget for PyQt and PySide.
-
-![Main](https://github.com/user-attachments/assets/b0d91e9a-a38f-45b9-9886-e1422c298b2c)
+A clean and modern formatted phone number input widget for PyQt and PySide.
 
 ## About
 
