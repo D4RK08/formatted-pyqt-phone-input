@@ -4,7 +4,7 @@ from qtpy import QtCore
 from qtpy.QtCore import Signal, Qt
 from qtpy.QtGui import QPainter, QIcon
 from qtpy.QtWidgets import QComboBox, QLineEdit
-from .countries import countries
+from countries import countries
 
 
 class CountryDropdown(QComboBox):
@@ -29,8 +29,8 @@ class CountryDropdown(QComboBox):
         self.__icon_size = 0
         self.__border_width = 0
         self.__popup_open = False
-        self.__current_country_code = ""
-        self.__format = ""
+        self.__current_country_code = ''
+
         # Initial settings
         self.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.view().setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
@@ -112,6 +112,12 @@ class CountryDropdown(QComboBox):
             if countries[country][0] == current_country_name:
                 return country
 
+    def getPhoneFormat(self):
+        return self.phone_format
+
+    def __update_phone_format(self):
+        self.phone_format = countries[self.getCountry()][2]
+
     def getCountryPhoneCode(self) -> str:
         """Get the phone code of the current country
 
@@ -152,9 +158,6 @@ class CountryDropdown(QComboBox):
         self.__border_width = width
         self.__calculate_geometry()
         self.update()
-
-    def getFormat(self) -> str:
-        return self.__format
 
     def isDropdownOpen(self) -> bool:
         """Gets whether the dropdown is currently opened
@@ -197,7 +200,4 @@ class CountryDropdown(QComboBox):
 
         self.__update_country_code()
         self.__calculate_geometry()
-        self.__update_format()
-
-    def __update_format(self):
-        self.__format = countries[self.getCountry()][2]
+        self.__update_phone_format()
