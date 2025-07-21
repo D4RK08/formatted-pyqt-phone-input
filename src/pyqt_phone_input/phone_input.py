@@ -4,7 +4,6 @@ from qtpy.QtGui import QColor, QPalette, QFont
 from qtpy.QtWidgets import QWidget, QLineEdit, QApplication
 from .country_dropdown import CountryDropdown
 from .phone_line_edit import PhoneLineEdit
-import sys
 
 class PhoneInput(QWidget):
 
@@ -735,9 +734,3 @@ class PhoneInput(QWidget):
         self.__country_dropdown.setFont(font)
 
 
-if __name__ == "__main__":
-
-    app = QApplication(sys.argv)
-    w = PhoneInput()
-    w.show()
-    sys.exit(app.exec())
